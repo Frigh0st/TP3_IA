@@ -33,7 +33,7 @@ class CData
 {
 private:
 	
-	int nb_input;  // nombre de variable ou attraibuts qui caractérise une observation ou une situation de tir
+	int nb_input;  // nombre de variables ou attributs qui caractérisent une observation ou une situation de tir
 	int nb_target; // nombre de tagert à à considérer. Par défaut. c'est toujours 1.
 
   // Input & Output Vector
