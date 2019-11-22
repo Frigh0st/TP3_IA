@@ -155,6 +155,11 @@ LRESULT CALLBACK WindowProc (HWND   hwnd,
            g_pRaven->ChangeWeaponOfPossessedBot(type_rail_gun);
 
            break;
+		 case '5':
+
+			 g_pRaven->ChangeWeaponOfPossessedBot(type_grenade);
+
+			 break;
 
          case 'X':
 
@@ -337,7 +342,7 @@ LRESULT CALLBACK WindowProc (HWND   hwnd,
     
     case WM_PAINT:
       {
- 		       
+ 		
          PAINTSTRUCT ps;
           
          BeginPaint (hwnd, &ps);
