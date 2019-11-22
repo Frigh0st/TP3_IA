@@ -277,6 +277,12 @@
     <ClCompile Include="Machine_Learning_Bot.cpp">
       <Filter>Game</Filter>
     </ClCompile>
+    <ClCompile Include="armory\Projectile_Bombe.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="armory\Weapon_Grenade.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Raven_Bot.h">
@@ -618,6 +624,8 @@
     <ClInclude Include="Machine_Learning_Bot.h" />
     <ClInclude Include="CData.h" />
     <ClInclude Include="CNeuralNet.h" />
+    <ClInclude Include="armory\Projectile_Bombe.h" />
+    <ClInclude Include="armory\Weapon_Grenade.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Params.lua">

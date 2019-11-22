@@ -112,14 +112,14 @@ public:
 	//loads an environment from a file
 	bool LoadMap(const std::string& FileName);
 
-	void AddBots(unsigned int NumBotsToAdd, bool typeBot);
-	void AddRocket(Raven_Bot* shooter, Vector2D target);
-	void AddRailGunSlug(Raven_Bot* shooter, Vector2D target);
-	void AddShotGunPellet(Raven_Bot* shooter, Vector2D target);
-	void AddBolt(Raven_Bot* shooter, Vector2D target);
-
-	//removes the last bot to be added
-	void RemoveBot();
+void AddBots(unsigned int NumBotsToAdd, bool typeBot);
+  void AddRocket(Raven_Bot* shooter, Vector2D target);
+  void AddRailGunSlug(Raven_Bot* shooter, Vector2D target);
+  void AddShotGunPellet(Raven_Bot* shooter, Vector2D target);
+  void AddBolt(Raven_Bot* shooter, Vector2D target);
+  void AddBombe(Raven_Bot* shooter, Vector2D target);
+  //removes the last bot to be added
+  void RemoveBot();
 
 	//returns true if a bot of size BoundingRadius cannot move from A to B
 	//without bumping into world geometry
