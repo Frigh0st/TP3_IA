@@ -465,6 +465,7 @@
     <ClCompile Include="armory\Weapon_Grenade.cpp" />
     <ClCompile Include="CData.cpp" />
     <ClCompile Include="CNeuralNet.cpp" />
+    <ClCompile Include="Dataset.cpp" />
     <ClCompile Include="Machine_Learning_Bot.cpp" />
     <ClCompile Include="main.cpp">
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -976,6 +977,7 @@
     <ClInclude Include="armory\Weapon_Grenade.h" />
     <ClInclude Include="CData.h" />
     <ClInclude Include="CNeuralNet.h" />
+    <ClInclude Include="Dataset.h" />
     <ClInclude Include="Machine_Learning_Bot.h" />
     <ClInclude Include="Raven_Bot.h" />
     <ClInclude Include="Raven_Game.h" />

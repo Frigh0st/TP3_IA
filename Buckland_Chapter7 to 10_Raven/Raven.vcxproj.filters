@@ -283,6 +283,9 @@
     <ClCompile Include="armory\Weapon_Grenade.cpp">
       <Filter>Game</Filter>
     </ClCompile>
+    <ClCompile Include="Dataset.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Raven_Bot.h">
@@ -626,6 +629,7 @@
     <ClInclude Include="CNeuralNet.h" />
     <ClInclude Include="armory\Projectile_Bombe.h" />
     <ClInclude Include="armory\Weapon_Grenade.h" />
+    <ClInclude Include="Dataset.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Params.lua">

@@ -276,6 +276,7 @@ bool Raven_Map::LoadMap(const std::string& filename)
    case type_rocket_launcher:
      
        AddWeapon_Giver(type_rocket_launcher, in); break;
+
    case type_grenade:
 
 	   AddWeapon_Giver(type_grenade, in); break;
