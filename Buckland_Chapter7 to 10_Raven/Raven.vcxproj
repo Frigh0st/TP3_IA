@@ -28,13 +28,14 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{EC1EBBC4-4F57-4002-856A-5C1BCFBC7BF9}</ProjectGuid>
+    <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseOfMfc>false</UseOfMfc>
     <CharacterSet>MultiByte</CharacterSet>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -46,7 +47,7 @@
     <ConfigurationType>Application</ConfigurationType>
     <UseOfMfc>false</UseOfMfc>
     <CharacterSet>MultiByte</CharacterSet>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -58,7 +59,7 @@
     <ConfigurationType>Application</ConfigurationType>
     <UseOfMfc>false</UseOfMfc>
     <CharacterSet>MultiByte</CharacterSet>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='boundschecker|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -976,6 +977,7 @@
     <ClInclude Include="armory\Weapon_Grenade.h" />
     <ClInclude Include="CData.h" />
     <ClInclude Include="CNeuralNet.h" />
+    <ClInclude Include="CsvWriter.h" />
     <ClInclude Include="Machine_Learning_Bot.h" />
     <ClInclude Include="Raven_Bot.h" />
     <ClInclude Include="Raven_Game.h" />

@@ -626,6 +626,7 @@
     <ClInclude Include="CNeuralNet.h" />
     <ClInclude Include="armory\Projectile_Bombe.h" />
     <ClInclude Include="armory\Weapon_Grenade.h" />
+    <ClInclude Include="CsvWriter.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Params.lua">
