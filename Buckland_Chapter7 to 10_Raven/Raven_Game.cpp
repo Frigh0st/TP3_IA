@@ -218,9 +218,6 @@ void Raven_Game::Update()
 					AddData((*curBot)->GetDataShoot(), (*curBot)->GetTargetShoot());
 					debug_con << "la taille du training set" << m_TrainingSet.GetInputSet().size() << "";
 				}
-				else {
-					debug_con << "la taille du training set" << m_TrainingSet.GetInputSet().size() << "";
-				}
 			}
 		}
 	}

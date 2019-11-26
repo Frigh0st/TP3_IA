@@ -124,6 +124,9 @@ void Raven_Bot::Spawn(Vector2D pos)
 //
 void Raven_Bot::Update()
 {
+
+	bool haveShoot;
+
 	//process the currently active goal. Note this is required even if the bot
 	//is under user control. This is because a goal is created whenever a user 
 	//clicks on an area of the map that necessitates a path planning request.
@@ -132,16 +135,17 @@ void Raven_Bot::Update()
 	//Calculate the steering force and update the bot's velocity and position
 	UpdateMovement();
 
+	//examine all the opponents in the bots sensory memory and select one
+		//to be the current target
+	if (m_pTargetSelectionRegulator->isReady())
+	{
+		m_pTargSys->Update();
+	}
+
 	//if the bot is under AI control but not scripted
 	if (!isPossessed())
 	{
-		//examine all the opponents in the bots sensory memory and select one
-		//to be the current target
-		if (m_pTargetSelectionRegulator->isReady())
-		{
-			m_pTargSys->Update();
-		}
-
+		
 		//appraise and arbitrate between all possible high level goals
 		if (m_pGoalArbitrationRegulator->isReady())
 		{
@@ -163,24 +167,24 @@ void Raven_Bot::Update()
 
 		//this method aims the bot's current weapon at the current target
 		//and takes a shot if a shot is possible
-		bool haveShoot = m_pWeaponSys->TakeAimAndShoot();
+		haveShoot = m_pWeaponSys->TakeAimAndShoot();
+	
+	}
 
+	//sauvegarder les données pour un eventuel apprentissage
 
+	if (m_pTargSys->isTargetPresent()) {
 
-		//sauvegarder les données pour un eventuel apprentissage
+		m_vecObservation.clear();
+		m_vecTarget.clear();
 
+		m_vecObservation.push_back((Pos().Distance(m_pTargSys->GetTarget()->Pos())));
+		m_vecObservation.push_back(m_pTargSys->isTargetWithinFOV());
+		m_vecObservation.push_back(m_pWeaponSys->GetAmmoRemainingForWeapon(m_pWeaponSys->GetCurrentWeapon()->GetType()));
+		m_vecObservation.push_back(m_pWeaponSys->GetCurrentWeapon()->GetType());
+		m_vecObservation.push_back((Health()));
 
-		if (m_pTargSys->isTargetPresent()) {
-
-			m_vecObservation.clear();
-			m_vecTarget.clear();
-
-			m_vecObservation.push_back((Pos().Distance(m_pTargSys->GetTarget()->Pos())));
-			m_vecObservation.push_back(m_pTargSys->isTargetWithinFOV());
-			m_vecObservation.push_back(m_pWeaponSys->GetAmmoRemainingForWeapon(m_pWeaponSys->GetCurrentWeapon()->GetType()));
-			m_vecObservation.push_back(m_pWeaponSys->GetCurrentWeapon()->GetType());
-			m_vecObservation.push_back((Health()));
-
+		if (!isPossessed()) {
 			if (!haveShoot) {
 				m_vecTarget.push_back(0); // La classe est négative.  Ne tire pas 
 			}
@@ -188,18 +192,9 @@ void Raven_Bot::Update()
 				m_vecTarget.push_back(1); // la classe de l'observation est positive. Il tire
 			}
 		}
-	}
-	else {
-		m_vecObservation.clear();
-		m_vecTarget.clear();
-
-		m_vecObservation.push_back(0);
-		m_vecObservation.push_back(0);
-		m_vecObservation.push_back(m_pWeaponSys->GetAmmoRemainingForWeapon(m_pWeaponSys->GetCurrentWeapon()->GetType()));
-		m_vecObservation.push_back(m_pWeaponSys->GetCurrentWeapon()->GetType());
-		m_vecObservation.push_back((Health()));
-
-		m_vecTarget.push_back(0);
+		else {
+			m_vecTarget.push_back(1);
+		}
 	}
 }
 
