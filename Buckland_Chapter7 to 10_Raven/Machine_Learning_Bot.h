@@ -16,12 +16,8 @@ public:
 	Machine_Learning_Bot(Raven_Game* world, Vector2D pos);
 	~Machine_Learning_Bot();
 
-
 	void Update();
 
-
 };
-
-
 
 #endif

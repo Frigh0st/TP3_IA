@@ -189,6 +189,18 @@ void Raven_Bot::Update()
 			}
 		}
 	}
+	else {
+		m_vecObservation.clear();
+		m_vecTarget.clear();
+
+		m_vecObservation.push_back(0);
+		m_vecObservation.push_back(0);
+		m_vecObservation.push_back(m_pWeaponSys->GetAmmoRemainingForWeapon(m_pWeaponSys->GetCurrentWeapon()->GetType()));
+		m_vecObservation.push_back(m_pWeaponSys->GetCurrentWeapon()->GetType());
+		m_vecObservation.push_back((Health()));
+
+		m_vecTarget.push_back(0);
+	}
 }
 
 

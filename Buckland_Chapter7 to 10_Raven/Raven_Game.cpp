@@ -212,11 +212,15 @@ void Raven_Game::Update()
 			(*curBot)->Update();
 
 			//on crée un échantillon de 200 observations. Juste assez pour ne pas s'accaparer de la mémoire...
-			if ((m_TrainingSet.GetInputSet().size() < 200) & ((*curBot)->Score() > 1)) {
-
-				//ajouter une observation au jeu d'entrainement
-				AddData((*curBot)->GetDataShoot(), (*curBot)->GetTargetShoot());
-				debug_con << "la taille du training set" << m_TrainingSet.GetInputSet().size() << "";
+			if ((*curBot)->isPossessed() && (*curBot)->GetTargetSys()->isTargetPresent()) {
+				if (m_TrainingSet.GetInputSet().size() < 1000) {
+					//ajouter une observation au jeu d'entrainement
+					AddData((*curBot)->GetDataShoot(), (*curBot)->GetTargetShoot());
+					debug_con << "la taille du training set" << m_TrainingSet.GetInputSet().size() << "";
+				}
+				else {
+					debug_con << "la taille du training set" << m_TrainingSet.GetInputSet().size() << "";
+				}
 			}
 		}
 	}
@@ -357,7 +361,7 @@ void Raven_Game::NotifyAllBotsOfRemoval(Raven_Bot* pRemovedBot)const
 	}
 }
 
-//ajout à chaque update d'un bot des données sur son cmportement
+//ajout à chaque update d'un bot des données sur son comportement
 bool Raven_Game::AddData(vector<double>& data, vector<double>& targets)
 {
 	if (data.size() > 0 && targets.size() > 0) {

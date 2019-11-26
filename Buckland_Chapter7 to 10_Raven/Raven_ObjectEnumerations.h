@@ -65,6 +65,7 @@ inline std::string GetNameOfType(int w)
   case type_shotgun:
     
     s =  "shotgun"; break;
+
   case type_grenade:
 
 	  s = "grenade"; break;
