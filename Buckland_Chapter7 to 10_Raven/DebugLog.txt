@@ -72,9 +72,7 @@ Creating a Railgun
 Creating a shotgun
 Creating a shotgun
 Creating a rocket_launcher
-Creating a grenade
-Creating a grenade
 maps/Raven_DM1.map loaded okay
+deleting raven bot (id = 401)
 deleting raven bot (id = 402)
 deleting raven bot (id = 403)
-deleting raven bot (id = 404)
