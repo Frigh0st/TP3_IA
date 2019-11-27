@@ -102,6 +102,10 @@ private:
 
 	int timeSinceLastSaved = 0;
 
+	int nbrSavedData = 0;
+
+	void FillTrainingSetFromFile(string filename);
+
 public:
 
 	Raven_Game();

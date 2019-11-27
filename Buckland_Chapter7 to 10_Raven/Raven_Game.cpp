@@ -31,7 +31,10 @@
 
 #include "Debug/DebugConsole.h"
 
+#include "CsvWriter.h"
+
 #include <thread> // pour la fonction d'apprentissage
+#include <iostream>
 
 
 
@@ -244,17 +247,66 @@ void Raven_Game::Update()
 	//Lancer l'apprentissage quand le jeu de données est suffisant
 	//la fonction d'apprentissage s'effectue en parallèle : thread
 
-	if ((m_TrainingSet.GetInputSet().size() >= 200) & (!m_LancerApprentissage)) {
-
-
+	if ((this->nbrSavedData >= 1000) & (!m_LancerApprentissage)) {
 		debug_con << "On passe par la" << "";
+
+		FillTrainingSetFromFile("data.csv");
 
 		std::thread t1(&Raven_Game::TrainThread, this);
 		t1.detach();
 
-
 	}
 
+}
+
+void Raven_Game::FillTrainingSetFromFile(string filename) {
+	// File pointer 
+	ifstream fin;
+
+	// Open an existing file 
+	fin.open(filename, ios::in);
+
+	// Read the Data from the file 
+	// as String Vector 
+	vector<string> row;
+	string line, word, temp;
+	vector<vector<string>> data;
+
+	while (fin >> temp) {
+		row.clear();
+
+		// read an entire row and 
+		// store it in a string variable 'line' 
+		getline(fin, line);
+
+		// used for breaking words 
+		istringstream s(temp);
+
+		// read every column data of a row and 
+		// store it in a string variable, 'word' 
+		while (getline(s, word, ',')) {
+			// add all the column data 
+			// of a row to a vector 
+			row.push_back(word);
+		}
+
+		data.push_back(row);
+	}
+
+	for (int i = 0; i <= 300;i++) {
+		int randInt = rand() % data.size();
+
+		vector<string> randomRow = data[randInt];
+
+		if (randomRow.size() == 6) {
+			vector<double> vecData = { stod(randomRow[0]),stod(randomRow[1]),stod(randomRow[2]),stod(randomRow[3]),stod(randomRow[4]) };
+			vector<double> vecTarget = { stod(randomRow[5]) };
+
+			this->AddData(vecData, vecTarget);
+
+			data.erase(data.begin() + randInt);
+		}
+	}
 }
 
 
@@ -593,11 +645,14 @@ void Raven_Game::SaveDataBot(Raven_Bot* bot, bool shot)
 {
 	if (bot->isPossessed() && bot->GetTargetSys()->isTargetPresent()) {
 		if (m_TrainingSet.GetInputSet().size() < 1000) {
-			//ajouter une observation au jeu d'entrainement
-			AddData(bot->GetDataShoot(), vector<double>{ (double)shot });
-			
-			debug_con << "la taille du training set" << m_TrainingSet.GetInputSet().size() << "";
+			CsvWriter writer("data.csv");
 
+			//Ajouter shot au vecteurs pour insertion sur la même ligne
+			vector<double> dataToWrite(bot->GetDataShoot());
+			dataToWrite.insert(dataToWrite.end(), (double)shot);
+			writer.addDatainRow(dataToWrite.begin(), dataToWrite.end());
+
+			this->nbrSavedData++;
 			this->timeSinceLastSaved = 0;
 		}
 	}
