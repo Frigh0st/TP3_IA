@@ -38,29 +38,33 @@ Bombe::Bombe(Raven_Bot* shooter, Vector2D target):
 void Bombe::Update()
 {
   if (!m_bImpacted)
-  {
-    m_vVelocity = MaxSpeed() * Heading();
+	{
+		m_vVelocity = MaxSpeed() * Heading();
 
-    //make sure vehicle does not exceed maximum velocity
-    m_vVelocity.Truncate(m_dMaxSpeed);
+		//make sure vehicle does not exceed maximum velocity
+		m_vVelocity.Truncate(m_dMaxSpeed);
 
-    //update the position
-    m_vPosition += m_vVelocity;
+		//update the position
+		m_vPosition += m_vVelocity;
 
-    TestForImpact();  
-  }
+		TestForImpact();
+	}
 
-  else
-  {
-    m_dCurrentBlastRadius += script->GetDouble("Bombe_ExplosionDecayRate");
+	else
+	{
+		if (TempsEcoule())
+		{
+			m_dCurrentBlastRadius += script->GetDouble("Bombe_ExplosionDecayRate");
 
-    //when the rendered blast circle becomes equal in size to the blast radius
-    //the rocket can be removed from the game
-    if (m_dCurrentBlastRadius > m_dBlastRadius)
-    {
-      m_bDead = true;
-    }
-  }
+			//when the rendered blast circle becomes equal in size to the blast radius
+			//the rocket can be removed from the game
+			if (m_dCurrentBlastRadius > m_dBlastRadius)
+			{
+				m_bDead = true;
+			}
+		}
+
+	}
 }
 
 void Bombe::TestForImpact()
@@ -76,7 +80,7 @@ void Bombe::TestForImpact()
     Raven_Bot* hit = GetClosestIntersectingBot(m_vPosition - m_vVelocity, m_vPosition);
     
     //if hit
-    if (hit)
+    if (hit && TempsEcoule())
     {
       m_bImpacted = true;
 
@@ -161,4 +165,15 @@ void Bombe::Render()
     gdi->HollowBrush();
     gdi->Circle(Pos(), m_dCurrentBlastRadius);
   }
+}
+
+bool Bombe::TempsEcoule()
+{
+	clock_t temps2 = clock();
+	int t1 = temps;
+	int t2 = temps2;
+
+	if (t2 - t1 > 2000)
+		return true;
+	return false;
 }
