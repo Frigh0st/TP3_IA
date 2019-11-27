@@ -98,7 +98,9 @@ private:
 
 	bool m_estEntraine;
 
+	void SaveDataBot(Raven_Bot* bot, bool shot);
 
+	int timeSinceLastSaved = 0;
 
 public:
 

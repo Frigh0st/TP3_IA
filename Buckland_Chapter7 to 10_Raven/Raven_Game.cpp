@@ -211,13 +211,11 @@ void Raven_Game::Update()
 		{
 			(*curBot)->Update();
 
-			//on crée un échantillon de 200 observations. Juste assez pour ne pas s'accaparer de la mémoire...
-			if ((*curBot)->isPossessed() && (*curBot)->GetTargetSys()->isTargetPresent()) {
-				if (m_TrainingSet.GetInputSet().size() < 1000) {
-					//ajouter une observation au jeu d'entrainement
-					AddData((*curBot)->GetDataShoot(), (*curBot)->GetTargetShoot());
-					debug_con << "la taille du training set" << m_TrainingSet.GetInputSet().size() << "";
-				}
+			if (this->timeSinceLastSaved >= TimeBetweenSave) {
+				this->SaveDataBot((*curBot),0);
+			}
+			else {
+				this->timeSinceLastSaved++;
 			}
 		}
 	}
@@ -585,6 +583,23 @@ void Raven_Game::ClickLeftMouseButton(POINTS p)
 	if (m_pSelectedBot && m_pSelectedBot->isPossessed())
 	{
 		m_pSelectedBot->FireWeapon(POINTStoVector(p));
+		SaveDataBot(m_pSelectedBot,true);
+	}
+}
+
+//---------------------- SaveBotData ---------------------------------
+//-----------------------------------------------------------------------------
+void Raven_Game::SaveDataBot(Raven_Bot* bot, bool shot)
+{
+	if (bot->isPossessed() && bot->GetTargetSys()->isTargetPresent()) {
+		if (m_TrainingSet.GetInputSet().size() < 1000) {
+			//ajouter une observation au jeu d'entrainement
+			AddData(bot->GetDataShoot(), vector<double>{ (double)shot });
+			
+			debug_con << "la taille du training set" << m_TrainingSet.GetInputSet().size() << "";
+
+			this->timeSinceLastSaved = 0;
+		}
 	}
 }
 

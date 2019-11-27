@@ -493,7 +493,9 @@ int WINAPI WinMain(HINSTANCE hInstance,
 		{
 			MessageBox(NULL, "CreateWindowEx Failed!", "Error!", 0);
 		}
-
+		
+		//Supprimer le fichier de data quand on lance le jeu
+		remove("data.csv");
 
 		//make the window visible
 		ShowWindow(hWnd, iCmdShow);
