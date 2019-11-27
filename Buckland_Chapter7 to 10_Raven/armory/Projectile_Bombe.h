@@ -25,12 +25,18 @@ private:
   //this is used to render the splash when the rocket impacts
   double    m_dCurrentBlastRadius;
 
+  // sert de minuteur
+  clock_t temps;
+  
   //If the rocket has impacted we test all bots to see if they are within the 
   //blast radius and reduce their health accordingly
   void InflictDamageOnBotsWithinBlastRadius();
 
     //tests the trajectory of the shell for an impact
   void TestForImpact();
+  
+  // Verifie si la grenade doit exploser
+  bool TempsEcoule();
 
 public:
 
