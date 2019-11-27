@@ -1,6 +1,6 @@
 NavGraph for maps/Raven_DM1.map loaded okay
-Average edge length is 23.7036
-Neighborhood range set to 24.7036
+Average edge length is 23.6607
+Neighborhood range set to 24.6607
 Partitioning navgraph nodes...
 Loading map...
 Creating a Wall
@@ -72,7 +72,13 @@ Creating a Railgun
 Creating a shotgun
 Creating a shotgun
 Creating a rocket_launcher
+Creating a grenade
+Creating a grenade
 maps/Raven_DM1.map loaded okay
-deleting raven bot (id = 401)
-deleting raven bot (id = 402)
-deleting raven bot (id = 403)
+BOT 1070 IS STUCK!!
+BOT 1069 IS STUCK!!
+Player is exorcised from bot 1069
+Player is exorcised from bot 1070
+deleting raven bot (id = 1069)
+deleting raven bot (id = 1070)
+deleting raven bot (id = 1071)
