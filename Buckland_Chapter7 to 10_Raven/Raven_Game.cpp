@@ -130,6 +130,7 @@ void Raven_Game::TrainThread() {
 		debug_con << "Modele d'apprentissage de tir est appris" << "";
 		m_estEntraine = true;
 
+		AddBots(2, true);
 	}
 
 }
@@ -201,12 +202,6 @@ void Raven_Game::Update()
 			//change its status to spawning
 			(*curBot)->SetSpawning();
 
-			//de temps en temps (une fois sur 2) créer un bot apprenant, lorqu'un un bot meurt.
-			//la fonction RandBool) rend vrai une fois sur 2.
-			if (m_estEntraine & RandBool()) {
-				AddBots(1, true);
-			}
-
 		}
 
 		//if this bot is alive update it.
@@ -214,8 +209,8 @@ void Raven_Game::Update()
 		{
 			(*curBot)->Update();
 
-			if (this->timeSinceLastSaved >= TimeBetweenSave) {
-				this->SaveDataBot((*curBot),0);
+			if (this->timeSinceLastSaved >= TimeBetweenSave && (m_TrainingSet.GetInputSet().size() < 1000)) {
+				this->SaveDataBot((*curBot), false);
 			}
 			else {
 				this->timeSinceLastSaved++;
@@ -254,7 +249,6 @@ void Raven_Game::Update()
 
 		std::thread t1(&Raven_Game::TrainThread, this);
 		t1.detach();
-
 	}
 
 }
@@ -644,17 +638,15 @@ void Raven_Game::ClickLeftMouseButton(POINTS p)
 void Raven_Game::SaveDataBot(Raven_Bot* bot, bool shot)
 {
 	if (bot->isPossessed() && bot->GetTargetSys()->isTargetPresent()) {
-		if (m_TrainingSet.GetInputSet().size() < 1000) {
-			CsvWriter writer("data.csv");
+		CsvWriter writer("data.csv");
 
-			//Ajouter shot au vecteurs pour insertion sur la même ligne
-			vector<double> dataToWrite(bot->GetDataShoot());
-			dataToWrite.insert(dataToWrite.end(), (double)shot);
-			writer.addDatainRow(dataToWrite.begin(), dataToWrite.end());
+		//Ajouter shot au vecteurs pour insertion sur la même ligne
+		vector<double> dataToWrite(bot->GetDataShoot());
+		dataToWrite.insert(dataToWrite.end(), (double)shot);
+		writer.addDatainRow(dataToWrite.begin(), dataToWrite.end());
 
-			this->nbrSavedData++;
-			this->timeSinceLastSaved = 0;
-		}
+		this->nbrSavedData++;
+		this->timeSinceLastSaved = 0;
 	}
 }
 
@@ -695,12 +687,13 @@ void Raven_Game::ChangeWeaponOfPossessedBot(unsigned int weapon)const
 
 			PossessedBot()->ChangeWeapon(type_rocket_launcher); return;
 
-    case type_rail_gun:
+		case type_rail_gun:
       
-      PossessedBot()->ChangeWeapon(type_rail_gun); return;
-	case type_grenade:
+			PossessedBot()->ChangeWeapon(type_rail_gun); return;
 
-		PossessedBot()->ChangeWeapon(type_grenade); return;
+		case type_grenade:
+
+			PossessedBot()->ChangeWeapon(type_grenade); return;
 
 		}
 	}

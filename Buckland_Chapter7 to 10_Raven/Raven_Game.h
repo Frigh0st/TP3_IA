@@ -96,7 +96,7 @@ private:
 
 	void TrainThread();
 
-	bool m_estEntraine;
+	bool m_estEntraine = false;
 
 	void SaveDataBot(Raven_Bot* bot, bool shot);
 
