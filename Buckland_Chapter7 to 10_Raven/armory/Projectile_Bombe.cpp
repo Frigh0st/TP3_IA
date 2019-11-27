@@ -30,6 +30,7 @@ Bombe::Bombe(Raven_Bot* shooter, Vector2D target):
        m_dBlastRadius(script->GetDouble("Bombe_BlastRadius"))
 {
    assert (target != Vector2D());
+   temps=clock();
 }
 
 
