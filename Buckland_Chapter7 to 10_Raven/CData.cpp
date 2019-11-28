@@ -13,7 +13,6 @@ void CData::AddData(vector<double> &data, vector<double> &targets)
 	else {
 		throw std::exception("Please check Input & Target Data !");
 	}
-
 }
 
 double CData::GetNbShooting()

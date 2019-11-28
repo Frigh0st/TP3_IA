@@ -97,18 +97,27 @@ void Trigger_WeaponGiver::Render()
         break;
 
       case type_rocket_launcher:
-        {
+	  {
 
-           Vector2D facing(-1,0);
+		  Vector2D facing(-1, 0);
 
-           m_vecRLVBTrans = WorldTransform(m_vecRLVB,
-                                          Pos(),
-                                          facing,
-                                          facing.Perp(),
-                                          Vector2D(2.5,2.5));
+		  m_vecRLVBTrans = WorldTransform(m_vecRLVB,
+			  Pos(),
+			  facing,
+			  facing.Perp(),
+			  Vector2D(2.5, 2.5));
 
-            gdi->RedPen();
-            gdi->ClosedShape(m_vecRLVBTrans);
+		  gdi->RedPen();
+		  gdi->ClosedShape(m_vecRLVBTrans);
+	  }
+	  break;
+	  case type_grenade:
+	  {
+
+		  gdi->OrangeBrush();
+		  gdi->PinkPen();
+		  const double sz = 4.0;
+		  gdi->Circle(Pos().x - sz, Pos().y, sz);
         }
       
         break;
