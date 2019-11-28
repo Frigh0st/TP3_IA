@@ -29,19 +29,6 @@ Machine_Learning_Bot::Machine_Learning_Bot(Raven_Game* world, Vector2D pos) : Ra
 
 Machine_Learning_Bot::~Machine_Learning_Bot()
 {
-	debug_con << "deleting learning bot (id = " << ID() << ")" << "";
-
-	delete m_pBrain;
-	delete m_pPathPlanner;
-	delete m_pSteering;
-	delete m_pWeaponSelectionRegulator;
-	delete m_pTargSys;
-	delete m_pGoalArbitrationRegulator;
-	delete m_pTargetSelectionRegulator;
-	delete m_pTriggerTestRegulator;
-	delete m_pVisionUpdateRegulator;
-	delete m_pWeaponSys;
-	delete m_pSensoryMem;
 }
 
 

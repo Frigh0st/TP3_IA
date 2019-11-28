@@ -129,8 +129,6 @@ void Raven_Game::TrainThread() {
 	if (isTraining) {
 		debug_con << "Modele d'apprentissage de tir est appris" << "";
 		m_estEntraine = true;
-
-		AddBots(2, true);
 	}
 
 }
@@ -209,7 +207,7 @@ void Raven_Game::Update()
 		{
 			(*curBot)->Update();
 
-			if (this->timeSinceLastSaved >= TimeBetweenSave && (m_TrainingSet.GetInputSet().size() < 1000)) {
+			if (this->m_isRecording && this->timeSinceLastSaved >= TimeBetweenSave && (m_TrainingSet.GetInputSet().size() < 1000)) {
 				this->SaveDataBot((*curBot), false);
 			}
 			else {
@@ -237,20 +235,31 @@ void Raven_Game::Update()
 
 		m_bRemoveABot = false;
 	}
+}
 
+bool Raven_Game::Train() {
 
-	//Lancer l'apprentissage quand le jeu de données est suffisant
-	//la fonction d'apprentissage s'effectue en parallèle : thread
+	if (nbrSavedData > 500)
+	{
+		if (!m_LancerApprentissage) {
+			debug_con << "Apprentissage en cours" << "";
 
-	if ((this->nbrSavedData >= 1000) & (!m_LancerApprentissage)) {
-		debug_con << "On passe par la" << "";
+			FillTrainingSetFromFile("data.csv");
 
-		FillTrainingSetFromFile("data.csv");
-
-		std::thread t1(&Raven_Game::TrainThread, this);
-		t1.detach();
+			std::thread t1(&Raven_Game::TrainThread, this);
+			t1.detach();
+			return true;
+		}
 	}
+	else {
+		debug_con << "Dataset trop petit pour effectuer l'entrainement" << "";
+		return false;
+	}
+}
 
+void Raven_Game::ToggleRecording()
+{
+	m_isRecording = !m_isRecording;
 }
 
 void Raven_Game::FillTrainingSetFromFile(string filename) {
@@ -287,7 +296,8 @@ void Raven_Game::FillTrainingSetFromFile(string filename) {
 		data.push_back(row);
 	}
 
-	for (int i = 0; i <= 300;i++) {
+	//crée le training set à partir du tier des données récoltées
+	for (int i = 0; i <= data.size()/3 ;i++) {
 		int randInt = rand() % data.size();
 
 		vector<string> randomRow = data[randInt];
@@ -361,10 +371,14 @@ void Raven_Game::AddBots(unsigned int NumBotsToAdd, bool isLearningBot)
 		Raven_Bot* rb;
 		if (!isLearningBot)
 			rb = new Raven_Bot(this, Vector2D());
-		else
+		else if(m_estEntraine)
 		{
 			rb = new Machine_Learning_Bot(this, Vector2D());
 			debug_con << "Instanciation d'un bot apprenant" << rb->ID() << "";
+		}
+		else {
+			debug_con << "Instanciation impossible" << "";
+			break;
 		}
 		//switch the default steering behaviors on
 		rb->GetSteering()->WallAvoidanceOn();
@@ -629,7 +643,9 @@ void Raven_Game::ClickLeftMouseButton(POINTS p)
 	if (m_pSelectedBot && m_pSelectedBot->isPossessed())
 	{
 		m_pSelectedBot->FireWeapon(POINTStoVector(p));
-		SaveDataBot(m_pSelectedBot,true);
+
+		if(m_isRecording)
+			SaveDataBot(m_pSelectedBot,true);
 	}
 }
 

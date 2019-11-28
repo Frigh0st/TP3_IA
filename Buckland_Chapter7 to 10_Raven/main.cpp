@@ -28,6 +28,17 @@ char* g_szWindowClassName = "MyWindowClass";
 
 Raven_Game* g_pRaven;
 
+void ToggleEnregistrement(HWND hwnd) 
+{
+	g_pRaven->ToggleRecording();
+
+	CheckMenuItemAppropriately(hwnd, ID_ML_ENREGISTRER, g_pRaven->isRecording());
+
+	if (!g_pRaven->isRecording()) 
+	{
+		EnableMenuItem(GetMenu(hwnd), ID_ML_ENTRAINER, MFS_ENABLED);
+	}
+}
 
 //---------------------------- WindowProc ---------------------------------
 //	
@@ -111,6 +122,8 @@ LRESULT CALLBACK WindowProc(HWND   hwnd,
 		CheckMenuItemAppropriately(hwnd, IDM_NAVIGATION_SHOW_INDICES, UserOptions->m_bShowNodeIndices);
 		CheckMenuItemAppropriately(hwnd, IDM_BOTS_SHOW_SENSED, UserOptions->m_bShowOpponentsSensedBySelectedBot);
 
+		EnableMenuItem(GetMenu(hwnd), ID_ML_ENTRAINER, MFS_DISABLED);
+		EnableMenuItem(GetMenu(hwnd), ID_ML_AJOUTERUNBOT, MFS_DISABLED);
 	}
 
 	break;
@@ -203,6 +216,18 @@ LRESULT CALLBACK WindowProc(HWND   hwnd,
 		switch (wParam)
 		{
 
+		case ID_ML_ENREGISTRER:
+			ToggleEnregistrement(hwnd);
+			break;
+
+		case ID_ML_ENTRAINER:
+			if(g_pRaven->Train())
+				EnableMenuItem(GetMenu(hwnd), ID_ML_AJOUTERUNBOT, MF_ENABLED);
+			break;
+
+		case ID_ML_AJOUTERUNBOT:
+			g_pRaven->AddBots(1, true);
+			break;
 
 		case IDM_GAME_LOAD:
 

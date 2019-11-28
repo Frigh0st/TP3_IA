@@ -59,7 +59,6 @@ BEGIN
         MENUITEM "Enregistrer",                 ID_ML_ENREGISTRER
         MENUITEM "Entrainer",                   ID_ML_ENTRAINER
         MENUITEM "Ajouter un bot apprenant",    ID_ML_AJOUTERUNBOT
-        MENUITEM "Supprimer un bot apprenant",  ID_ML_SUPPRIMERUNBOTAPPRENANT
     END
 END
 

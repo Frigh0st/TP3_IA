@@ -97,6 +97,7 @@ private:
 	void TrainThread();
 
 	bool m_estEntraine = false;
+	bool m_isRecording = false;
 
 	void SaveDataBot(Raven_Bot* bot, bool shot);
 
@@ -114,6 +115,11 @@ public:
 	//the usual suspects
 	void Render();
 	void Update();
+
+	bool Train();
+
+	bool isRecording() { return m_isRecording; }
+	void ToggleRecording();
 
 	//loads an environment from a file
 	bool LoadMap(const std::string& FileName);
@@ -155,7 +161,6 @@ void AddBots(unsigned int NumBotsToAdd, bool typeBot);
 	//bounding radius of that position.If there is no bot at the position the
 	//method returns NULL
 	Raven_Bot* GetBotAtPosition(Vector2D CursorPos)const;
-
 
 	void        TogglePause() { m_bPaused = !m_bPaused; }
 
