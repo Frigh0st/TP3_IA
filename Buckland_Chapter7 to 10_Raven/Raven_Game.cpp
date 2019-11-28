@@ -207,7 +207,7 @@ void Raven_Game::Update()
 		{
 			(*curBot)->Update();
 
-			if (this->m_isRecording && this->timeSinceLastSaved >= TimeBetweenSave && (m_TrainingSet.GetInputSet().size() < 1000)) {
+			if (this->m_isRecording && this->timeSinceLastSaved >= TimeBetweenSave) {
 				this->SaveDataBot((*curBot), false);
 			}
 			else {
@@ -592,7 +592,7 @@ void Raven_Game::ExorciseAnyPossessedBot()
 void Raven_Game::ClickRightMouseButton(POINTS p)
 {
 	Raven_Bot* pBot = GetBotAtPosition(POINTStoVector(p));
-
+	bool IsInList = false;
 	//if there is no selected bot just return;
 	if (!pBot && m_pSelectedBot == NULL) return;
 
@@ -600,9 +600,18 @@ void Raven_Game::ClickRightMouseButton(POINTS p)
 	//change selection
 	if (pBot && pBot != m_pSelectedBot)
 	{
-		if (m_pSelectedBot) m_pSelectedBot->Exorcise();
 		m_pSelectedBot = pBot;
-
+		for (int i = 0; i < m_TeamBots.size(); i++)
+		{
+			if (m_pSelectedBot == m_TeamBots[i])
+			{
+				IsInList = true;
+			}
+			if (!IsInList)
+			{
+				m_TeamBots.push_back(m_pSelectedBot);
+			}
+		}
 		return;
 	}
 
@@ -610,10 +619,17 @@ void Raven_Game::ClickRightMouseButton(POINTS p)
 	//the player's control)
 	if (pBot && pBot == m_pSelectedBot)
 	{
-		m_pSelectedBot->TakePossession();
-
 		//clear any current goals
 		m_pSelectedBot->GetBrain()->RemoveAllSubgoals();
+		for (int i = 0; i < m_TeamBots.size(); i++)
+		{
+			m_TeamBots[i]->Exorcise();
+		}
+
+		m_TeamBots.clear();
+
+		m_pSelectedBot->TakePossession();
+		m_TeamBots.push_back(m_pSelectedBot);
 	}
 
 	//if the bot is possessed then a right click moves the bot to the cursor
@@ -629,24 +645,54 @@ void Raven_Game::ClickRightMouseButton(POINTS p)
 		else
 		{
 			//clear any current goals
+			for (int i = 0; i < m_TeamBots.size(); i++)
+			{
+				m_TeamBots[i]->GetBrain()->RemoveAllSubgoals();
+				m_TeamBots[i]->GetBrain()->AddGoal_MoveToPosition(POINTStoVector(p));
+			}
 			m_pSelectedBot->GetBrain()->RemoveAllSubgoals();
-
 			m_pSelectedBot->GetBrain()->AddGoal_MoveToPosition(POINTStoVector(p));
 		}
 	}
+}
+
+void Raven_Game::ClickMiddleMouseButton(POINTS p)
+{
+	Raven_Bot* pBot = GetBotAtPosition(POINTStoVector(p));
+	if (!pBot) return;
+	for (int i = 0; i < m_TeamBots.size(); i++)
+	{
+		if (pBot == m_TeamBots[i]) { return; }
+	}
+	m_TeamBots.push_back(pBot);
+	pBot->TakePossession();
 }
 
 //---------------------- ClickLeftMouseButton ---------------------------------
 //-----------------------------------------------------------------------------
 void Raven_Game::ClickLeftMouseButton(POINTS p)
 {
-	if (m_pSelectedBot && m_pSelectedBot->isPossessed())
-	{
-		m_pSelectedBot->FireWeapon(POINTStoVector(p));
+	Raven_Bot* pBot = GetBotAtPosition(POINTStoVector(p));
+	bool IsInTeam = false;
 
-		if(m_isRecording)
-			SaveDataBot(m_pSelectedBot,true);
+	for (int i = 0; i < m_TeamBots.size(); i++)
+	{
+		if (pBot && pBot == m_TeamBots[i])
+		{
+			IsInTeam = true;
+		}
 	}
+
+	for (int j = 0; j < m_TeamBots.size(); j++)
+	{
+		if (!IsInTeam)
+		{
+			m_TeamBots[j]->FireWeapon(POINTStoVector(p));
+		}
+	}
+
+	if (m_isRecording)
+		SaveDataBot(m_pSelectedBot, true);
 }
 
 //---------------------- SaveBotData ---------------------------------
@@ -675,7 +721,10 @@ void Raven_Game::GetPlayerInput()const
 {
 	if (m_pSelectedBot && m_pSelectedBot->isPossessed())
 	{
-		m_pSelectedBot->RotateFacingTowardPosition(GetClientCursorPosition());
+		for (int i = 0; i < m_TeamBots.size(); i++)
+		{
+			m_TeamBots[i]->RotateFacingTowardPosition(GetClientCursorPosition());
+		}
 	}
 }
 

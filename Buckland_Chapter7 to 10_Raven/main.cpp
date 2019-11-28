@@ -200,7 +200,12 @@ LRESULT CALLBACK WindowProc(HWND   hwnd,
 	{
 		g_pRaven->ClickLeftMouseButton(MAKEPOINTS(lParam));
 	}
-
+	break;
+    
+	case WM_MBUTTONDOWN:
+	{
+	  g_pRaven->ClickMiddleMouseButton(MAKEPOINTS(lParam));
+	}
 	break;
 
 	case WM_RBUTTONDOWN:

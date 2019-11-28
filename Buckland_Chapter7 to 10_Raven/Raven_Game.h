@@ -41,18 +41,23 @@ class Raven_Game
 private:
 
 	//the current game map
-	Raven_Map* m_pMap;
+	Raven_Map*						m_pMap;
 
 	//a list of all the bots that are inhabiting the map
-	std::list<Raven_Bot*>            m_Bots;
+	std::list<Raven_Bot*>           m_Bots;
 
 	//the user may select a bot to control manually. This is a pointer to that
 	//bot
-	Raven_Bot* m_pSelectedBot;
+	Raven_Bot*						m_pSelectedBot;
+
+	Raven_Bot*						m_pPreviousBot;
+
+	//a list of all the bots that are in a team
+	std::vector<Raven_Bot*>         m_TeamBots;
 
 	//this list contains any active projectiles (slugs, rockets,
 	//shotgun pellets, etc)
-	std::list<Raven_Projectile*>     m_Projectiles;
+	std::list<Raven_Projectile*>    m_Projectiles;
 
 	//this class manages all the path planning requests
 	PathManager<Raven_PathPlanner>* m_pPathManager;
@@ -170,6 +175,9 @@ void AddBots(unsigned int NumBotsToAdd, bool typeBot);
 	// bot/s will attempt to move to that position.
 	void        ClickRightMouseButton(POINTS p);
 
+	//this method is called when the user want to add a bot in his team.
+	void		  ClickMiddleMouseButton(POINTS p);
+
 	//this method is called when the user clicks the left mouse button. If there
 	//is a possessed bot, this fires the weapon, else does nothing
 	void        ClickLeftMouseButton(POINTS p);
@@ -198,9 +206,5 @@ void AddBots(unsigned int NumBotsToAdd, bool typeBot);
 		TagNeighbors(pRaven_Bot, m_Bots, range);
 	}
 };
-
-
-
-
 
 #endif
