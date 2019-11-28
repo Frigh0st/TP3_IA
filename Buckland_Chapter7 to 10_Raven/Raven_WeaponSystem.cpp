@@ -128,11 +128,11 @@ void  Raven_WeaponSystem::AddWeapon(unsigned int weapon_type)
 
 	case type_rocket_launcher:
 
-    w = new RocketLauncher(m_pOwner); break;
+		w = new RocketLauncher(m_pOwner); break;
 
-  case type_grenade:
+	case type_grenade:
 
-	  w = new Grenade(m_pOwner); break;
+		w = new Grenade(m_pOwner); break;
 
 	}//end switch
 
